@@ -146,7 +146,7 @@ services:
     environment:
       ZOOKEEPER_PORT: 2181
       ZOOKEEPER_ID: 0
-      ZOOKEEPER_SERVERS: server.0=zookeeper0:2888:3888 server.1=zookeeper1:28881:38881 server.2=zookeeper2:28882:38882
+      ZOOKEEPER_SERVERS: server.0=zookeeper0:2888:3888,server.1=zookeeper1:28881:38881,server.2=zookeeper2:28882:38882
 
   zookeeper1:
     build:
@@ -165,8 +165,8 @@ services:
       - 38881
     environment:
       ZOOKEEPER_PORT: 2182
-      ZOOKEEPER_ID: 0
-      ZOOKEEPER_SERVERS: server.0=zookeeper0:2888:3888 server.1=zookeeper1:28881:38881 server.2=zookeeper2:28882:38882
+      ZOOKEEPER_ID: 1
+      ZOOKEEPER_SERVERS: server.0=zookeeper0:2888:3888,server.1=zookeeper1:28881:38881,server.2=zookeeper2:28882:38882
 
   zookeeper2:
     build:
@@ -185,8 +185,8 @@ services:
       - 38882
     environment:
       ZOOKEEPER_PORT: 2183
-      ZOOKEEPER_ID: 0
-      ZOOKEEPER_SERVERS: server.0=zookeeper0:2888:3888 server.1=zookeeper1:28881:38881 server.2=zookeeper2:28882:38882
+      ZOOKEEPER_ID: 2
+      ZOOKEEPER_SERVERS: server.0=zookeeper0:2888:3888,server.1=zookeeper1:28881:38881,server.2=zookeeper2:28882:38882
 
   kafka0:
     build:
@@ -200,9 +200,8 @@ services:
     environment:
       ZOOKEEPER_CONNECT: zookeeper0:2181,zookeeper1:2182,zookeeper2:2183
       BROKER_ID: 0
-      BROKER_PORT: 9092
-      ADVERTISED_HOST_NAME: kafka0
-      HOST_NAME: kafka0
+      LISTENERS: listeners=PLAINTEXT:\/\/kafka0:9092
+      ADVERTISED_LISTENERS: advertised.listeners=PLAINTEXT:\/\/kafka0:9092
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
@@ -224,9 +223,8 @@ services:
     environment:
       ZOOKEEPER_CONNECT: zookeeper0:2181,zookeeper1:2182,zookeeper2:2183
       BROKER_ID: 1
-      BROKER_PORT: 9093
-      ADVERTISED_HOST_NAME: kafka1
-      HOST_NAME: kafka1
+      LISTENERS: listeners=PLAINTEXT:\/\/kafka1:9093
+      ADVERTISED_LISTENERS: advertised.listeners=PLAINTEXT:\/\/kafka1:9093
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
@@ -248,9 +246,8 @@ services:
     environment:
       ZOOKEEPER_CONNECT: zookeeper0:2181,zookeeper1:2182,zookeeper2:2183
       BROKER_ID: 2
-      BROKER_PORT: 9094
-      ADVERTISED_HOST_NAME: kafka2
-      HOST_NAME: kafka2
+      LISTENERS: listeners=PLAINTEXT:\/\/kafka2:9094
+      ADVERTISED_LISTENERS: advertised.listeners=PLAINTEXT:\/\/kafka2:9094
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
