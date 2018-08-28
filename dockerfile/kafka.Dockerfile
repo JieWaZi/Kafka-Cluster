@@ -14,15 +14,16 @@ RUN mkdir /opt/java &&\
 	sed -i "/^export PATH/i export JAVA_HOME=/opt/java/jdk1.8.0_181" ~/.bash_profile &&\
 	sed -i  's/^export PATH.*$/&:\$JAVA_HOME\/bin/g' ~/.bash_profile
 
-ENV ZOOKEEPER_VERSION "3.4.10"
+ENV KAFKA_VERSION "2.0.0"
 
-RUN mkdir /opt/zookeeper &&\
-	wget http://mirror.bit.edu.cn/apache/zookeeper/zookeeper-$ZOOKEEPER_VERSION/zookeeper-$ZOOKEEPER_VERSION.tar.gz -P /opt/zookeeper &&\
-    tar -zxf /opt/zookeeper/zookeeper-$ZOOKEEPER_VERSION.tar.gz -C /opt/zookeeper &&\
-	rm /opt/zookeeper/zookeeper-$ZOOKEEPER_VERSION.tar.gz
+RUN mkdir /opt/kafka &&\
+	wget http://mirror.bit.edu.cn/apache/kafka/$KAFKA_VERSION/kafka_2.11-$KAFKA_VERSION.tgz -P /opt/kafka &&\
+	tar -zxf /opt/kafka/kafka_2.11-$KAFKA_VERSION.tgz -C /opt/kafka/ &&\
+	rm /opt/kafka/kafka_2.11-$KAFKA_VERSION.tgz &&\
+	sed -i 's/num.partitions.*$/num.partitions=3/g' /opt/kafka/kafka_2.11-$KAFKA_VERSION/config/server.properties
 
-COPY zk-start.sh /opt/zookeeper
+COPY scripts/kf-start.sh /opt/kafka
 
-EXPOSE 2181
+EXPOSE 9092
 
-ENTRYPOINT ["bash", "/opt/zookeeper/zk-start.sh"]
+ENTRYPOINT ["bash", "/opt/kafka/kf-start.sh"]

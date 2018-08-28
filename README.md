@@ -37,7 +37,7 @@ RUN mkdir /opt/zookeeper &&\
     tar -zxf /opt/zookeeper/zookeeper-$ZOOKEEPER_VERSION.tar.gz -C /opt/zookeeper &&\
 	rm /opt/zookeeper/zookeeper-$ZOOKEEPER_VERSION.tar.gz
 
-COPY zk-start.sh /opt/zookeeper
+COPY scripts/zk-start.sh /opt/zookeeper
 
 EXPOSE 2181
 
@@ -100,7 +100,7 @@ RUN mkdir /opt/kafka &&\
 	rm /opt/kafka/kafka_2.11-$KAFKA_VERSION.tgz &&\
 	sed -i 's/num.partitions.*$/num.partitions=3/g' /opt/kafka/kafka_2.11-$KAFKA_VERSION/config/server.properties
 
-COPY kf-start.sh /opt/kafka
+COPY scripts/kf-start.sh /opt/kafka
 
 EXPOSE 9092
 
@@ -273,7 +273,7 @@ services:
   ```
 
 - 输入 `docker-compose ps`查看启动的容器相关信息
-![容器相关信息](2.png)
+![容器相关信息](image/2.png)
 
 - 进入其中一个kafka容器中,创建topic
     - ` docker exec -it kafka0 /bin/bash`
@@ -286,10 +286,10 @@ services:
   
 - 查看topic信息
   - `./kafka-topics.sh --zookeeper zookeeper0:2181,zookeeper1:2182,zookeeper2:2183 --describe --topic dev_message`
-  ![topic信息](1.png)
+  ![topic信息](image/1.png)
 - 启动一个customer
   - `./kafka-console-consumer.sh --bootstrap-server kafka0:9092,kafka1:9093,kafka2:9094 --topic dev_message`
 - 启动一个producer
   - `./kafka-console-producer.sh --broker-list kafka0:9092,kafka1:9093,kafka2:9094 --topic dev_message`
 - 进行producer端输入相关信息，在customer查看
-  ![查看](3.png)
+  ![查看](image/3.png)
